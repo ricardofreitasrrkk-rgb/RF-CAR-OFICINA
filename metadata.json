@@ -1,0 +1,8 @@
+{
+  "name": "RF CAR OFICINA - Investor Pitch Deck",
+  "description": "Uma apresentação interativa de alto nível para investidores sobre a RF CAR OFICINA, focada em modernização automotiva, fidelização e IA em Angola.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
