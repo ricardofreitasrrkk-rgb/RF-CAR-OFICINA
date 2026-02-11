@@ -1,4 +1,4 @@
-// Add React import to provide the namespace for React.ReactNode type
+
 import React from 'react';
 
 export interface SlideData {
@@ -10,14 +10,19 @@ export interface SlideData {
 }
 
 export enum DiagnosticStatus {
-  IDLE = 'IDLE',
-  SCANNING = 'SCANNING',
-  ANALYZING = 'ANALYZING',
-  COMPLETED = 'COMPLETED'
+  IDLE = 'idle',
+  SCANNING = 'scanning',
+  ANALYZING = 'analyzing',
+  RESULT = 'result',
+  REPORT = 'report'
+}
+
+export interface AppViewState {
+  view: 'home' | 'diag' | 'store' | 'academy' | 'luck';
 }
 
 export interface MarketStats {
   label: string;
-  value: number;
-  year: string;
+  value: string;
+  trend: string;
 }
