@@ -10,17 +10,42 @@ import {
   Trophy,
   Star
 } from 'lucide-react';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { useApp } from '../AppContext';
+
+const data = [
+  { name: '08:00', value: 40 },
+  { name: '09:00', value: 30 },
+  { name: '10:00', value: 65 },
+  { name: '11:00', value: 45 },
+  { name: '12:00', value: 90 },
+  { name: '13:00', value: 70 },
+  { name: '14:00', value: 85 },
+];
 
 const DashboardView: React.FC = () => {
+  const { addNotification, user } = useApp();
+
+  const handleNewBooking = () => {
+    addNotification('Abrindo formulário de agendamento...', 'info');
+  };
+
+  const handleJackpot = () => {
+    addNotification('Participação registada! Boa sorte no sorteio.', 'success');
+  };
+
   return (
     <div className="space-y-8 pb-10">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-4xl font-black tracking-tight mb-2">Painel do <span className="gold-text">Condutor</span></h1>
-          <p className="text-slate-500 font-medium">Gestão centralizada da sua frota pessoal • Toyota Hilux V6 (LD-00-RF)</p>
+          <p className="text-slate-500 font-medium">Gestão centralizada da sua frota pessoal • {user.vehicle}</p>
         </div>
         <div className="flex gap-3">
-          <button className="bg-blue-600 hover:bg-blue-500 px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-blue-500/20 transition-all flex items-center gap-2">
+          <button 
+            onClick={handleNewBooking}
+            className="bg-blue-600 hover:bg-blue-500 px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-blue-500/20 transition-all flex items-center gap-2"
+          >
             <Calendar className="w-4 h-4" /> Novo Agendamento
           </button>
         </div>
@@ -29,11 +54,15 @@ const DashboardView: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
           { label: 'Saúde Geral', value: '94%', color: 'text-green-500', icon: ShieldCheck },
-          { label: 'Pontos VIP', value: '12.450', color: 'text-yellow-500', icon: Star },
+          { label: 'Pontos VIP', value: user.points.toLocaleString(), color: 'text-yellow-500', icon: Star },
           { label: 'Próxima Revisão', value: '1.200km', color: 'text-blue-500', icon: Calendar },
           { label: 'Alertas Ativos', value: '01', color: 'text-orange-500', icon: ShieldCheck },
         ].map((stat, i) => (
-          <div key={i} className="glass p-6 rounded-3xl border-white/5 flex items-center justify-between group cursor-pointer hover:border-white/10 transition">
+          <div 
+            key={i} 
+            onClick={() => addNotification(`Detalhes de ${stat.label} em breve.`, 'info')}
+            className="glass p-6 rounded-3xl border-white/5 flex items-center justify-between group cursor-pointer hover:border-white/10 transition"
+          >
             <div>
               <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">{stat.label}</p>
               <p className={`text-3xl font-black ${stat.color}`}>{stat.value}</p>
@@ -52,6 +81,27 @@ const DashboardView: React.FC = () => {
             <span className="text-xs font-black text-blue-500 tracking-widest uppercase bg-blue-500/10 px-3 py-1 rounded-full">LIVE FEED</span>
           </div>
           
+          <div className="h-[200px] w-full mb-8">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={data}>
+                <defs>
+                  <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
+                <XAxis dataKey="name" stroke="#64748b" fontSize={10} tickLine={false} axisLine={false} />
+                <YAxis hide />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: '#0f172a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
+                  itemStyle={{ color: '#3b82f6', fontWeight: 'bold' }}
+                />
+                <Area type="monotone" dataKey="value" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorValue)" />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+
           <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="flex flex-col items-center justify-center p-6 bg-slate-900/50 rounded-[2rem] border border-white/5 relative overflow-hidden group">
                <div className="absolute inset-0 bg-blue-600/5 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -81,7 +131,12 @@ const DashboardView: React.FC = () => {
           <div className="bg-gradient-to-br from-blue-600 to-blue-800 p-8 rounded-[2rem] text-center shadow-xl shadow-blue-600/30">
             <p className="text-xs font-black uppercase tracking-[0.2em] opacity-80 mb-2">Grande Prémio Mensal</p>
             <p className="text-4xl font-black mb-6">500.000 Kz</p>
-            <button className="w-full py-4 bg-white text-blue-600 rounded-2xl font-black uppercase text-xs hover:scale-105 transition-transform">Participar Agora</button>
+            <button 
+              onClick={handleJackpot}
+              className="w-full py-4 bg-white text-blue-600 rounded-2xl font-black uppercase text-xs hover:scale-105 transition-transform"
+            >
+              Participar Agora
+            </button>
             <p className="mt-4 text-[10px] opacity-60">Sorteio em 12 dias • 350 participantes</p>
           </div>
         </div>

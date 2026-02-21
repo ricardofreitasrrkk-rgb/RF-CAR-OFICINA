@@ -1,8 +1,10 @@
 
 import React from 'react';
 import { PlayCircle, GraduationCap, Clock, Award, ChevronRight, Lock } from 'lucide-react';
+import { useApp } from '../AppContext';
 
 const AcademyView: React.FC = () => {
+  const { addNotification } = useApp();
   const courses = [
     { title: 'Eletrónica Automotiva Nível 1', lessons: '12 Aulas', duration: '6h 30m', img: 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&q=80&w=400', progress: 45, free: true },
     { title: 'Programação de Chaves Transponder', lessons: '8 Aulas', duration: '4h 20m', img: 'https://images.unsplash.com/photo-1542362567-b054216893e9?auto=format&fit=crop&q=80&w=400', progress: 0, free: false },
@@ -17,7 +19,10 @@ const AcademyView: React.FC = () => {
           <p className="text-slate-500 font-medium">Formação técnica especializada para a nova geração de mecatrónicos.</p>
         </div>
         <div className="flex gap-4">
-          <div className="glass px-6 py-4 rounded-3xl border-white/5 flex items-center gap-4">
+          <div 
+            onClick={() => addNotification('Acedendo aos seus certificados...', 'info')}
+            className="glass px-6 py-4 rounded-3xl border-white/5 flex items-center gap-4 cursor-pointer"
+          >
             <Award className="text-yellow-500 w-8 h-8" />
             <div>
                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Meus Certificados</p>
@@ -59,9 +64,18 @@ const AcademyView: React.FC = () => {
                     <div className="h-1.5 bg-slate-900 rounded-full overflow-hidden">
                        <div className="h-full bg-blue-500 rounded-full" style={{ width: `${c.progress}%` }} />
                     </div>
+                    <button 
+                      onClick={() => addNotification(`Continuando curso: ${c.title}`, 'success')}
+                      className="w-full mt-4 py-4 bg-blue-600 text-white rounded-2xl font-black uppercase text-xs flex items-center justify-center gap-2"
+                    >
+                      Continuar <ChevronRight className="w-4 h-4" />
+                    </button>
                   </div>
                 ) : (
-                  <button className={`w-full py-4 rounded-2xl font-black uppercase text-xs flex items-center justify-center gap-2 transition-all ${c.free ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20' : 'bg-slate-900 text-slate-500 border border-white/5'}`}>
+                  <button 
+                    onClick={() => addNotification(c.free ? `Iniciando curso: ${c.title}` : 'Este curso requer subscrição VIP.', c.free ? 'success' : 'error')}
+                    className={`w-full py-4 rounded-2xl font-black uppercase text-xs flex items-center justify-center gap-2 transition-all ${c.free ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20' : 'bg-slate-900 text-slate-500 border border-white/5'}`}
+                  >
                     {c.free ? 'Começar Aula' : 'Desbloquear com VIP'} <ChevronRight className="w-4 h-4" />
                   </button>
                 )}

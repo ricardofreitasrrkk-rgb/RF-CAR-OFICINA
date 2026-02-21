@@ -66,7 +66,8 @@ const VoiceAssistant: React.FC = () => {
   const startAssistant = async () => {
     try {
       setIsConnecting(true);
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+      // Corrected API initialization to strictly follow guidelines
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       
       const inputCtx = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 16000 });
       const outputCtx = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
@@ -100,6 +101,7 @@ const VoiceAssistant: React.FC = () => {
                 data: encode(new Uint8Array(int16.buffer)),
                 mimeType: 'audio/pcm;rate=16000',
               };
+              // CRITICAL: Solely rely on sessionPromise resolves to prevent race conditions
               sessionPromise.then(s => s.sendRealtimeInput({ media: pcmBlob }));
             };
             
@@ -127,7 +129,9 @@ const VoiceAssistant: React.FC = () => {
             }
 
             if (msg.serverContent?.interrupted) {
-              sourcesRef.current.forEach(s => s.stop());
+              for (const source of sourcesRef.current) {
+                source.stop();
+              }
               sourcesRef.current.clear();
               nextStartTimeRef.current = 0;
             }

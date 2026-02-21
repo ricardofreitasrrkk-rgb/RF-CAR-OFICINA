@@ -13,35 +13,13 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#020617">
 
-    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/index.css">
     <style>
       body {
-        font-family: 'Inter', sans-serif;
-        background-color: #020617;
-        color: #f8fafc;
         overflow: hidden; /* Evita scroll elástico do browser no mobile */
         user-select: none; /* Previne seleção de texto acidental no app */
         -webkit-tap-highlight-color: transparent;
-      }
-      .gold-text {
-        background: linear-gradient(to right, #fde047, #f59e0b, #facc15);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-      .metallic-rf {
-        background: linear-gradient(180deg, #ffffff 0%, #94a3b8 45%, #334155 50%, #1e293b 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.8));
-      }
-      .glass {
-        background: rgba(15, 23, 42, 0.6);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-      }
-      .bg-circuit {
-        background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg stroke='%231e293b' stroke-width='0.5'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zM59 75c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zM34 52c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zM60 7h10v10H60V7zM5 52h10v10H5V52z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
       }
       /* Safe Area Inset for modern phones */
       .pb-safe {
@@ -59,8 +37,10 @@
   }
 }
 </script>
+<link rel="stylesheet" href="/index.css">
 </head>
   <body class="bg-circuit fixed inset-0 overflow-hidden">
     <div id="root"></div>
-  </body>
+  <script type="module" src="/index.tsx"></script>
+</body>
 </html>

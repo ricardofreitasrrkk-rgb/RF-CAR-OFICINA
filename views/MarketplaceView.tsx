@@ -1,14 +1,19 @@
 
 import React from 'react';
 import { ShoppingBag, Search, Filter, Star, Zap, ShoppingCart } from 'lucide-react';
+import { useApp } from '../AppContext';
 
 const MarketplaceView: React.FC = () => {
+  const { addToCart, addNotification, cart } = useApp();
+
   const products = [
-    { name: 'Transponder ID48 Original', price: '12.500 Kz', img: 'https://images.unsplash.com/photo-1542362567-b054216893e9?auto=format&fit=crop&q=80&w=200', tag: 'MAIS VENDIDO' },
-    { name: 'Cabo VAG-COM V2 Profissional', price: '45.000 Kz', img: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=200', tag: 'TOP TECH' },
-    { name: 'Bateria AGM 80Ah Mercedes', price: '185.000 Kz', img: 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&q=80&w=200', tag: 'OFERTA' },
-    { name: 'Kit OBD-II Mini Bluetooth 5.0', price: '18.000 Kz', img: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&q=80&w=200', tag: 'RF EXCLUSIVE' },
+    { id: 'p1', name: 'Transponder ID48 Original', price: 12500, priceFormatted: '12.500 Kz', img: 'https://images.unsplash.com/photo-1542362567-b054216893e9?auto=format&fit=crop&q=80&w=200', tag: 'MAIS VENDIDO' },
+    { id: 'p2', name: 'Cabo VAG-COM V2 Profissional', price: 45000, priceFormatted: '45.000 Kz', img: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=200', tag: 'TOP TECH' },
+    { id: 'p3', name: 'Bateria AGM 80Ah Mercedes', price: 185000, priceFormatted: '185.000 Kz', img: 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&q=80&w=200', tag: 'OFERTA' },
+    { id: 'p4', name: 'Kit OBD-II Mini Bluetooth 5.0', price: 18000, priceFormatted: '18.000 Kz', img: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&q=80&w=200', tag: 'RF EXCLUSIVE' },
   ];
+
+  const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
     <div className="space-y-10 pb-10">
@@ -18,8 +23,18 @@ const MarketplaceView: React.FC = () => {
           <p className="text-slate-500 font-medium">Peças certificadas, hardware de diagnóstico e serviços parceiros.</p>
         </div>
         <div className="flex gap-4 w-full md:w-auto">
-          <button className="flex-1 md:flex-none glass px-6 py-3 rounded-2xl border-white/5 flex items-center gap-3 text-sm font-bold"><Filter className="w-4 h-4" /> Filtros</button>
-          <button className="flex-1 md:flex-none bg-blue-600 px-6 py-3 rounded-2xl text-white font-black text-xs uppercase shadow-lg shadow-blue-500/20 flex items-center gap-2"><ShoppingCart className="w-4 h-4" /> Carrinho (0)</button>
+          <button 
+            onClick={() => addNotification('Filtros em desenvolvimento...', 'info')}
+            className="flex-1 md:flex-none glass px-6 py-3 rounded-2xl border-white/5 flex items-center gap-3 text-sm font-bold"
+          >
+            <Filter className="w-4 h-4" /> Filtros
+          </button>
+          <button 
+            onClick={() => addNotification(`Carrinho contém ${cartCount} itens. Finalização em breve.`, 'info')}
+            className="flex-1 md:flex-none bg-blue-600 px-6 py-3 rounded-2xl text-white font-black text-xs uppercase shadow-lg shadow-blue-500/20 flex items-center gap-2"
+          >
+            <ShoppingCart className="w-4 h-4" /> Carrinho ({cartCount})
+          </button>
         </div>
       </div>
 
@@ -41,8 +56,11 @@ const MarketplaceView: React.FC = () => {
                   </div>
                </div>
                <div className="mt-auto flex justify-between items-center pt-4">
-                  <p className="text-xl font-black text-white">{p.price}</p>
-                  <button className="p-3 bg-slate-900 rounded-xl hover:bg-blue-600 transition group-btn">
+                  <p className="text-xl font-black text-white">{p.priceFormatted}</p>
+                  <button 
+                    onClick={() => addToCart({ id: p.id, name: p.name, price: p.price, priceFormatted: p.priceFormatted })}
+                    className="p-3 bg-slate-900 rounded-xl hover:bg-blue-600 transition group-btn"
+                  >
                      <ShoppingBag className="w-4 h-4 text-slate-500 group-btn-hover:text-white transition" />
                   </button>
                </div>
@@ -52,7 +70,10 @@ const MarketplaceView: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
-         <div className="glass p-10 rounded-[3rem] border-white/10 bg-gradient-to-r from-blue-600/5 to-transparent flex items-center gap-8 group cursor-pointer hover:border-blue-500/30 transition">
+         <div 
+          onClick={() => addNotification('Agendando recolha de veículo...', 'info')}
+          className="glass p-10 rounded-[3rem] border-white/10 bg-gradient-to-r from-blue-600/5 to-transparent flex items-center gap-8 group cursor-pointer hover:border-blue-500/30 transition"
+         >
             <div className="w-20 h-20 bg-blue-600/20 rounded-[1.5rem] flex items-center justify-center text-blue-500 group-hover:scale-110 transition">
                <Zap className="w-10 h-10" />
             </div>
@@ -61,7 +82,10 @@ const MarketplaceView: React.FC = () => {
                <p className="text-sm text-slate-500 leading-relaxed">Agende a recolha do seu veículo em casa para diagnósticos críticos em Luanda.</p>
             </div>
          </div>
-         <div className="glass p-10 rounded-[3rem] border-white/10 bg-gradient-to-r from-orange-600/5 to-transparent flex items-center gap-8 group cursor-pointer hover:border-orange-500/30 transition">
+         <div 
+          onClick={() => addNotification('Acedendo ao catálogo de peças certificadas...', 'info')}
+          className="glass p-10 rounded-[3rem] border-white/10 bg-gradient-to-r from-orange-600/5 to-transparent flex items-center gap-8 group cursor-pointer hover:border-orange-500/30 transition"
+         >
             <div className="w-20 h-20 bg-orange-600/20 rounded-[1.5rem] flex items-center justify-center text-orange-500 group-hover:scale-110 transition">
                <Star className="w-10 h-10" />
             </div>

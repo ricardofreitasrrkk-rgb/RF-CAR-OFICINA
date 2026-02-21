@@ -1,6 +1,6 @@
 {
-  "name": "RF CAR OFICINA - Investor Pitch Deck",
-  "description": "Uma apresentação interativa de alto nível para investidores sobre a RF CAR OFICINA, focada em modernização automotiva, fidelização e IA em Angola.",
+  "name": "RF CAR - Digital Ecosystem",
+  "description": "Plataforma avançada de diagnóstico automotivo e ecossistema digital para o mercado angolano.",
   "requestFramePermissions": [
     "camera",
     "microphone"
